@@ -1,0 +1,62 @@
+# Environment
+.env
+venv/
+.claude/
+
+# Logs
+logs/
+
+# Airflow
+airflow/logs/
+airflow/plugins/
+airflow/dags/__pycache__/
+
+# Python
+__pycache__/
+*.pyc
+
+# Docker
+postgres_data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# dbt (learning project)
+# Keep build artifacts ignored, but track the files the auto-grader reads
+dbt_learning/target/*
+!dbt_learning/target/run_results.json
+!dbt_learning/target/catalog.json
+dbt_learning/dbt_packages/
+dbt_learning/logs/
+
+# IDE
+.vscode/
+.idea/
+
+# Mentor-only (answer keys & evaluation — do NOT share with mentees)
+scripts/generate_seeds.py
+assignments_and_evaluation.md
+
+# Mentor-only: reference solution models (the answer key students build themselves).
+# The example_* guides stay tracked; these are the completed solutions.
+dbt_learning/models/schema.yml
+dbt_learning/models/stage/stg_*.sql
+dbt_learning/models/dev/dim_*.sql
+dbt_learning/models/dev/fct_*.sql
+dbt_learning/macros/net_amount.sql
+dbt_learning/tests/test_*.sql
+dbt_learning/snapshots/snap_products.sql
+
+# Mentor-only: only Week 1 is released to mentees for now. Later weeks stay
+# local until it's time to hand them out.
+week_2/
+week_3/
+week_4/
+week_5/
+week_6/
+
+# Airflow is a Week 6 topic — keep it hidden until then.
+airflow/dags/dbt_pipeline.py
+dbt_learning/docs/airflow_overview.md
+dbt_learning/docs/pipeline_retrospective.md
