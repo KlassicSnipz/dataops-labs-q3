@@ -327,10 +327,13 @@ def grade_week_3():
                     custom_file_found = True
     checks.append(("3.2", custom_file_found,
                    "✅ Custom test on net_amount found in tests/"
-                   if custom_file_found else "❌ No custom test referencing net_amount in tests/", 8))
+                   if custom_file_found else "❌ No custom test referencing net_amount in tests/", 6))
     checks.append(("3.2", *check_text_contains(tests_blob, r"ref\s*\(", "Custom test uses ref()"), 4))
     checks.append(("3.2", *check_text_contains(
-        tests_blob, r"net_amount\s*<\s*0", "Checks net_amount < 0"), 8))
+        tests_blob, r"net_amount\s*<\s*0", "Checks net_amount < 0"), 6))
+    checks.append(("3.2", *check_text_contains(
+        tests_blob, r"severity\s*[=:]\s*['\"]?warn",
+        "Custom test set to severity='warn' (keeps Week 6 pipeline green)"), 4))
 
     # ── Task 3.3: Fix the Duplicate Orders Bug (25 pts) ─────
     stg_orders = file_exists(os.path.join(STAGE_DIR, "stg_orders.sql")) or ""
