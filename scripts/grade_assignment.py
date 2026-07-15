@@ -299,8 +299,9 @@ def grade_week_3():
     results = load_dbt_results()
 
     yaml_blob = concat_dir_content(MODELS_DIR)
+    project_c = file_exists(DBT_PROJECT_YML) or ""
 
-    # ── Task 3.1: Generic Tests in YAML (45 pts) ────────────
+    # ── Task 3.1: Generic Tests in YAML (40 pts) ────────────
     checks.append(("3.1", bool(re.search(r"tests:", yaml_blob)),
                    "✅ A schema .yml with tests exists under models/"
                    if re.search(r"tests:", yaml_blob)
@@ -308,10 +309,13 @@ def grade_week_3():
     checks.append(("3.1", *check_text_contains(yaml_blob, r"-\s*unique", "Contains 'unique' tests"), 10))
     checks.append(("3.1", *check_text_contains(yaml_blob, r"-\s*not_null", "Contains 'not_null' tests"), 10))
     checks.append(("3.1", *check_text_contains(yaml_blob, r"relationships", "Contains 'relationships' test"), 10))
-    checks.append(("3.1", *check_text_contains(yaml_blob, r"name:\s*dim_customers", "dim_customers declared"), 5))
-    checks.append(("3.1", *check_text_contains(yaml_blob, r"name:\s*fct_order_items", "fct_order_items declared"), 5))
+    both_declared = (re.search(r"name:\s*dim_customers", yaml_blob) and
+                     re.search(r"name:\s*fct_order_items", yaml_blob))
+    checks.append(("3.1", bool(both_declared),
+                   "✅ dim_customers and fct_order_items declared in schema"
+                   if both_declared else "❌ dim_customers / fct_order_items not both declared", 5))
 
-    # ── Task 3.2: One Custom Test (25 pts) ──────────────────
+    # ── Task 3.2: One Custom Test (20 pts) ──────────────────
     tests_blob = ""
     custom_file_found = False
     if os.path.isdir(TESTS_DIR):
@@ -323,17 +327,26 @@ def grade_week_3():
                     custom_file_found = True
     checks.append(("3.2", custom_file_found,
                    "✅ Custom test on net_amount found in tests/"
-                   if custom_file_found else "❌ No custom test referencing net_amount in tests/", 10))
-    checks.append(("3.2", *check_text_contains(tests_blob, r"ref\s*\(", "Custom test uses ref()"), 5))
+                   if custom_file_found else "❌ No custom test referencing net_amount in tests/", 8))
+    checks.append(("3.2", *check_text_contains(tests_blob, r"ref\s*\(", "Custom test uses ref()"), 4))
     checks.append(("3.2", *check_text_contains(
-        tests_blob, r"net_amount\s*<\s*0", "Checks net_amount < 0"), 10))
+        tests_blob, r"net_amount\s*<\s*0", "Checks net_amount < 0"), 8))
 
-    # ── Task 3.3: Fix the Duplicate Orders Bug (30 pts) ─────
+    # ── Task 3.3: Fix the Duplicate Orders Bug (25 pts) ─────
     stg_orders = file_exists(os.path.join(STAGE_DIR, "stg_orders.sql")) or ""
     checks.append(("3.3", *check_text_contains(
         stg_orders, r"row_number\s*\(\s*\)|distinct", "stg_orders deduplicates (row_number/distinct)"), 15))
-    checks.append(("3.3", *check_model_rows(results, "fct_order_items", 313, "fct_order_items = 313 rows"), 8))
-    checks.append(("3.3", *check_model_rows(results, "fct_orders", 155, "fct_orders = 155 rows"), 7))
+    checks.append(("3.3", *check_model_rows(results, "fct_order_items", 313, "fct_order_items = 313 rows"), 5))
+    checks.append(("3.3", *check_model_rows(results, "fct_orders", 155, "fct_orders = 155 rows"), 5))
+
+    # ── Task 3.4: Store Test Failures (15 pts) ──────────────
+    # store_failures may be set per-test in schema.yml or project-wide in
+    # dbt_project.yml — accept either location.
+    store_blob = yaml_blob + "\n" + project_c
+    checks.append(("3.4", *check_text_contains(
+        store_blob, r"store_failures", "store_failures configured (schema.yml or dbt_project.yml)"), 10))
+    checks.append(("3.4", *check_text_contains(
+        store_blob, r"store_failures\s*:\s*true", "store_failures set to true"), 5))
 
     return render(report, checks)
 

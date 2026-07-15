@@ -23,6 +23,7 @@
 - **Built-In Tests:** Add `not_null`, `unique`, and `relationships` to keys and foreign keys.
 - **One Custom Test:** Write a SQL check for a basic rule (e.g. `net_amount` is never negative).
 - **Find & Fix a Bug:** A `unique` test fails on duplicate order data — diagnose it and fix the staging model.
+- **Store Failures:** Enable `store_failures` so the bad rows are saved to a table you can inspect.
 - **Assignment:** `dbt test` green after the fix; row counts land at 313 items / 155 orders.
 
 ## Week 4: A Reusable Macro
