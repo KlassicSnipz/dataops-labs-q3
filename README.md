@@ -11,7 +11,7 @@ one small assignment per week (~2 hours each).
 ## Syllabus
 
 - ✅ **[Week 1: Build the Staging Layer](./week_1/)** — available now
-- 🔒 **Week 2: Dimensions & the Incremental Fact** — released after Week 1
+- ✅ **[Week 2: Dimensions & the Incremental Fact](./week_2/)** — available now
 - 🔒 **Week 3: Test the Warehouse** — released after Week 2
 - 🔒 **Week 4: A Reusable Macro** — released after Week 3
 - 🔒 **Week 5: Speed It Up** — released after Week 4
