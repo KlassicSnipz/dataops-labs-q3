@@ -37,7 +37,6 @@ dbt_learning/logs/
 scripts/generate_seeds.py
 assignments_and_evaluation.md
 
-# Mentor-only: reference solution files, moved here (out of dbt_learning/) so
 # their filenames no longer collide with the identically-named files mentees
 # are assigned to create and commit in their own forks.
 answer_key/
